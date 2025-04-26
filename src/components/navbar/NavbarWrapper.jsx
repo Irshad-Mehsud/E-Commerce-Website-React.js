@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DesktopNavbar from "./DesktopNavbar";
+import DesktopNavbar from "../navbar/DesktopNavbar";
 import MobileNavbar from "./MobileNavbar";
 
 const NavbarWrapper = () => {

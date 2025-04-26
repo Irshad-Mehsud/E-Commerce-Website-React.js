@@ -7,7 +7,7 @@ const Sidebar = ({ onClose }) => {
     <div className="fixed top-0 left-0 w-64 bg-white shadow-lg z-50 max-h-screen overflow-y-auto transition-transform duration-300 transform translate-x-0 md:hidden rounded-r-xl">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b">
-        <div className="text-lg font-semibold">ShopifyX</div>
+        <div className="text-lg font-semibold">Ahmad's Store</div>
         <button onClick={onClose} className="text-gray-600 hover:text-red-500">
           <svg
             xmlns="http://www.w3.org/2000/svg"

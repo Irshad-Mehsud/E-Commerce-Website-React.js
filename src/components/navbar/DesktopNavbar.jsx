@@ -1,21 +1,33 @@
-import React, { useState } from "react";
-import CartPage from "../cartpage/CartPage";
+import React from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom"; // Import hooks
 
 const DesktopNavbar = () => {
-  const [showCart, setShowCart] = useState(false);
+  const location = useLocation();   // 📍 Where are we?
+  const navigate = useNavigate();   // 🚀 Navigate between pages
+
+  const handleCartClick = () => {
+    if (location.pathname === "/cart") {
+      navigate("/");    // If on CartPage, go Home
+    } else {
+      navigate("/cart"); // Else, go to CartPage
+    }
+  };
 
   return (
     <>
       <nav className="bg-white shadow-md hidden md:block w-full">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          
           {/* Left: Logo */}
-          <div className="text-xl font-bold text-gray-800">ShopifyX</div>
+          <Link to={"/"} > <div className="text-xl font-bold text-gray-800">Ahmad's Store</div></Link>
 
           {/* Center: Navigation Links */}
           <div className="flex items-center space-x-6">
-            <a href="#" className="text-gray-600 hover:text-blue-600">
+            {/* <a href="#" className="text-gray-600 hover:text-blue-600">
               Home
-            </a>
+            </a> */}
+
+            <Link to={"/"} className="text-gray-600 hover:text-blue-600">Home</Link>
 
             {/* Categories Dropdown */}
             <div className="relative group">
@@ -57,15 +69,19 @@ const DesktopNavbar = () => {
               placeholder="Search..."
               className="border px-2 py-1 rounded-md text-sm"
             />
+
+            {/* 🛒 Cart Icon with Toggle */}
             <button
+              onClick={handleCartClick}
               className="relative text-xl"
-              onClick={() => setShowCart(!showCart) }
             >
               🛒
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                 2
               </span>
             </button>
+
+            {/* Avatar */}
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNWm44z7UhkyxOjpzxzIwxM-lccdJD5J5sKw&s"
               alt="User Avatar"
@@ -74,9 +90,6 @@ const DesktopNavbar = () => {
           </div>
         </div>
       </nav>
-
-      {/* Conditionally Render CartPage */}
-      {showCart && <CartPage />}
     </>
   );
 };

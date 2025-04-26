@@ -52,7 +52,7 @@ const Home = () => {
   return (
     <>
       {/* Navbar */}
-      <NavbarWrapper />
+      {/* <NavbarWrapper /> */}
 
       {/* Login/Signup Section shown on any click */}
       {/* {showAuth && (
