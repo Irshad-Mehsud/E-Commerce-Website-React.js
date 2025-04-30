@@ -55,7 +55,7 @@ const Home = () => {
       {/* <NavbarWrapper /> */}
 
       {/* Login/Signup Section shown on any click */}
-      {/* {showAuth && (
+      {showAuth && (
         <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
           {type === "login" ? (
             <LoginForm setType={setType} />
@@ -63,7 +63,7 @@ const Home = () => {
             <SignUpForm setType={setType} />
           )}
         </div>
-      )} */}
+      )}
 
       {/* Hero Section */}
       <HeroSection />
