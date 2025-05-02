@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom"; // Import hooks
-
 const DesktopNavbar = () => {
   const location = useLocation();   // 📍 Where are we?
   const navigate = useNavigate();   // 🚀 Navigate between pages
@@ -91,6 +90,7 @@ const DesktopNavbar = () => {
         </div>
       </nav>
     </>
+    
   );
 };
 

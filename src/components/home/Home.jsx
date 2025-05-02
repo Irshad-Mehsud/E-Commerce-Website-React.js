@@ -6,6 +6,7 @@ import NavbarWrapper from '../navbar/NavbarWrapper';
 import HeroSection from '../herosection/HeroSection';
 import FeaturedProducts from '../FeaturedProducts/FeaturedProducts';
 import ProductCard from '../FeaturedProducts/ProductCard';
+import Footer from '../footer/Footer';
 import CartPage from '../cartpage/CartPage';
 import DesktopNavbar from '../navbar/DesktopNavbar';
 
@@ -55,7 +56,7 @@ const Home = () => {
       {/* <NavbarWrapper /> */}
 
       {/* Login/Signup Section shown on any click */}
-      {showAuth && (
+      {/* {showAuth && (
         <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
           {type === "login" ? (
             <LoginForm setType={setType} />
@@ -63,7 +64,7 @@ const Home = () => {
             <SignUpForm setType={setType} />
           )}
         </div>
-      )}
+      )} */}
 
       {/* Hero Section */}
       <HeroSection />
@@ -82,6 +83,8 @@ const Home = () => {
           />
         ))}
       </FeaturedProducts>
+
+      <Footer />
     </>
   );
 };

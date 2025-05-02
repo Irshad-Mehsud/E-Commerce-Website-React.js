@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MdDelete } from "react-icons/md";
-
+import Footer from "../footer/Footer";
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([
     {
@@ -54,7 +54,8 @@ const CartPage = () => {
   );
 
   return (
-    <div className="grid grid-cols-1 gap-6 p-4 bg-gray-100 min-h-screen">
+  <>
+      <div className="grid grid-cols-1 gap-6 p-4 bg-gray-100 min-h-screen">
       {/* Profile Section */}
       <div className="col-span-1 md:col-span-3 bg-white p-2 rounded-lg shadow-md">
         <div className="flex items-center space-x-4 py-2 px-4 justify-center flex-col">
@@ -131,6 +132,8 @@ const CartPage = () => {
         </div>
       </div>
     </div>
+    <Footer/>
+  </>
   );
 };
 
