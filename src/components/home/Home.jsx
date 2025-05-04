@@ -9,6 +9,7 @@ import ProductCard from '../FeaturedProducts/ProductCard';
 import Footer from '../footer/Footer';
 import CartPage from '../cartpage/CartPage';
 import DesktopNavbar from '../navbar/DesktopNavbar';
+import AddToCartContext from '../context/AddToCartContext';
 
 const Home = () => {
 
@@ -20,15 +21,18 @@ const Home = () => {
 
   // Store products from fakestore API
   const [products, setProducts] = useState([]);
-
   const [itemcount ,setItemCount] = useState(0);
-
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await fetch('https://fakestoreapi.com/products');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
         const data = await response.json();
         setProducts(data);
+        setItemCount(data.length); // ✅ Set item count
+        // console.log('Fetched products:', data); // ✅ Helpful debug log
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -36,7 +40,9 @@ const Home = () => {
     getData();
   }, []);
   
-
+  // const [cartItems, setCartItems] = useState([]);
+  
+// console.log(products);
   // Show login/signup form when user clicks anywhere
   const handleClickAnywhere = () => {
     setShowAuth(true);
@@ -70,10 +76,12 @@ const Home = () => {
       <HeroSection />
 
       {/* Featured Products Section */}
-      <FeaturedProducts>
+     {/* <AddToCartContext.Provider value={{cartItems, setCartItems}}> */}
+     <FeaturedProducts>
         {products.map((product) => (
           <ProductCard
             key={product.id}
+            product={product}
             image={product.image}
             name={product.title}
             description={product.description}
@@ -83,6 +91,7 @@ const Home = () => {
           />
         ))}
       </FeaturedProducts>
+     {/* </AddToCartContext.Provider> */}
 
       <Footer />
     </>

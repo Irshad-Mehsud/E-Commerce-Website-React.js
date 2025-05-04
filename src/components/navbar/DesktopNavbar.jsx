@@ -1,9 +1,12 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom"; // Import hooks
+import ProductCard from "../FeaturedProducts/ProductCard"; // Import ProductCard component
+import AddToCartContext from "../context/AddToCartContext";
+import { useContext } from "react"; // Import useContext hook
 const DesktopNavbar = () => {
   const location = useLocation();   // 📍 Where are we?
   const navigate = useNavigate();   // 🚀 Navigate between pages
-
+  const { itemCount } = useContext(AddToCartContext);
   const handleCartClick = () => {
     if (location.pathname === "/cart") {
       navigate("/");    // If on CartPage, go Home
@@ -46,6 +49,17 @@ const DesktopNavbar = () => {
                     href="#"
                     id={item.toLowerCase().replace(/\s/g, "")}
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                    onClick={()=>{
+                      if(item === "All"){
+                        navigate("/")
+                        }
+                        else if(item === "Electronics"){
+                          navigate("/electronics")
+                        }
+                        else if(item === "Jewelery"){
+                          navigate("/jewelery")
+                        }
+                    }}
                   >
                     {item}
                   </a>
@@ -76,7 +90,7 @@ const DesktopNavbar = () => {
             >
               🛒
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                2
+               {itemCount}
               </span>
             </button>
 

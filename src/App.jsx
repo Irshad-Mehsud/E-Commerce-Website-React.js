@@ -1,12 +1,16 @@
-import React from 'react'
-// import Home from './components/home/Home'
-import AppRoutes from './components/routes/AppRoutes'
-const App = () => {
-  return (
-    <div>
-    <AppRoutes/>
-    </div>
-  )
-}
+import React, { useState } from 'react';
+import AddToCartContext from './components/context/AddToCartContext';
+import AppRoutes from './components/routes/AppRoutes';
 
-export default App
+const App = () => {
+  const [itemCount, setItemCount] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
+
+  return (
+    <AddToCartContext.Provider value={{ itemCount, setItemCount, cartItems, setCartItems }}>
+      <AppRoutes />
+    </AddToCartContext.Provider>
+  );
+};
+
+export default App;

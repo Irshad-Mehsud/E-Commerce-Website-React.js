@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar"; // Correct your path if needed
 import { useLocation, useNavigate } from "react-router-dom"; // Import hooks
-
+import AddToCartContext from "../context/AddToCartContext";
+import { useContext } from "react";
 const MobileNavbar = () => {
   const [showSideBar, setShowSideBar] = useState(false);
-
+  const { itemCount } = useContext(AddToCartContext);
   const location = useLocation();   // 📍 Get current path
   const navigate = useNavigate();   // 🚀 Navigate between pages
 
@@ -59,7 +60,7 @@ const MobileNavbar = () => {
           <button onClick={handleCartClick} className="relative text-xl">
             🛒
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-              2
+            {itemCount}
             </span>
           </button>
 
