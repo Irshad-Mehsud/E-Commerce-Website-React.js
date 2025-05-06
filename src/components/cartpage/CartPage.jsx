@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
 import { db, collection, getDocs } from "../signup/config/firebase"; // Import Firestore functions
 import Footer from "../footer/Footer";
+import Loading from "../Loading"; // Import Loading component
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true); // To handle loading state
-
+   
+  // useEffect(() => {
+  //   setTimeout(() => setLoading(false), 3000);
+  // }, [])
   // Fetch cart items from Firestore
   const fetchCartItems = async () => {
     try {
@@ -27,6 +31,7 @@ const CartPage = () => {
 
   useEffect(() => {
     fetchCartItems(); // Fetch cart items when the component mounts
+    setTimeout(() => setLoading(false), 3000);
   }, []); // Empty array ensures it runs only once
 
   const handleIncrement = (id) => {
@@ -57,7 +62,7 @@ const CartPage = () => {
   );
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading text while data is being fetched
+    return <div><Loading/></div>; // Show loading text while data is being fetched
   }
 
   return (
