@@ -10,7 +10,7 @@ import Footer from '../footer/Footer';
 import CartPage from '../cartpage/CartPage';
 import DesktopNavbar from '../navbar/DesktopNavbar';
 import AddToCartContext from '../context/AddToCartContext';
-
+import Loading from '../Loading';
 const Home = () => {
 
   // useState hook to manage the form type (login or signup)
@@ -21,6 +21,7 @@ const Home = () => {
 
   // Store products from fakestore API
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [itemcount ,setItemCount] = useState(0);
   useEffect(() => {
     const getData = async () => {
@@ -37,7 +38,10 @@ const Home = () => {
         console.error('Error fetching data:', error);
       }
     };
+
+    setTimeout(() => setLoading(false), 1000);
     getData();
+
   }, []);
   
   // const [cartItems, setCartItems] = useState([]);
@@ -78,19 +82,28 @@ const Home = () => {
       {/* Featured Products Section */}
      {/* <AddToCartContext.Provider value={{cartItems, setCartItems}}> */}
      <FeaturedProducts>
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            image={product.image}
-            name={product.title}
-            description={product.description}
-            price={product.price}
-            setItemCount={setItemCount}
-            itemcount={itemcount}
-          />
-        ))}
-      </FeaturedProducts>
+  {loading && performance.navigation.type === 1 ? (
+    <div><Loading/></div>
+  ) : (
+    <>
+      {products.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          image={product.image}
+          name={product.title}
+          description={product.description}
+          price={product.price}
+          setItemCount={setItemCount}
+          itemcount={itemcount}
+        />
+      ))}
+    </>
+  )}
+</FeaturedProducts>
+
+
+
      {/* </AddToCartContext.Provider> */}
 
       <Footer />

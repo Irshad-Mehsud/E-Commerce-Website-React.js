@@ -7,11 +7,6 @@ import Loading from "../Loading"; // Import Loading component
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true); // To handle loading state
-   
-  // useEffect(() => {
-  //   setTimeout(() => setLoading(false), 3000);
-  // }, [])
-  // Fetch cart items from Firestore
   const fetchCartItems = async () => {
     try {
       const cartRef = collection(db, "cartItems"); // Reference to Firestore cart collection
@@ -31,7 +26,7 @@ const CartPage = () => {
 
   useEffect(() => {
     fetchCartItems(); // Fetch cart items when the component mounts
-    setTimeout(() => setLoading(false), 3000);
+    setTimeout(() => setLoading(false), 1000);
   }, []); // Empty array ensures it runs only once
 
   const handleIncrement = (id) => {
