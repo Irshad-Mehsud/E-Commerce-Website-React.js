@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MdDelete } from "react-icons/md";
-import { db, collection, getDocs } from "../signup/config/firebase"; // Import Firestore functions
+import { db, collection, getDocs, deleteDoc, doc } from "../signup/config/firebase"; // Import Firestore functions
 import Footer from "../footer/Footer";
 import Loading from "../Loading"; // Import Loading component
 
@@ -14,8 +14,9 @@ const CartPage = () => {
 
       const cartItemsData = [];
       querySnapshot.forEach((doc) => {
-        cartItemsData.push(doc.data()); // Push each document's data to the array
+        cartItemsData.push({ docId: doc.id, ...doc.data() });
       });
+      
       setCartItems(cartItemsData); // Set the state with fetched cart items
       setLoading(false); // Set loading state to false after data is fetched
     } catch (error) {
@@ -47,8 +48,17 @@ const CartPage = () => {
     );
   };
 
-  const handleDelete = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  const handleDelete = async (id) => {
+    console.log("handleDelete called with id:", id, "type:", typeof id);
+    try {
+      const itemDocRef = doc(db, "cartItems", String(id));
+      console.log("Deleting document at path:", itemDocRef.path);
+      await deleteDoc(itemDocRef);
+      setCartItems((prev) => prev.filter((item) => item.docId !== id)); // Fix: use docId here
+    } catch (error) {
+      console.error("Failed to delete item:", error);
+      alert("Failed to delete item. Please try again.");
+    }
   };
 
   const totalPrice = cartItems.reduce(
@@ -95,20 +105,20 @@ const CartPage = () => {
                     </div>
                     <div className="flex items-center space-x-2">
                       <button
-                        onClick={() => handleDecrement(item.id)}
+                        onClick={() => handleDecrement(item.docId)}
                         className="bg-gray-200 px-2 py-1 rounded-md"
                       >
                         -
                       </button>
                       <span>{item.quantity}</span>
                       <button
-                        onClick={() => handleIncrement(item.id)}
+                        onClick={() => handleIncrement(item.docId)}
                         className="bg-gray-200 px-2 py-1 rounded-md"
                       >
                         +
                       </button>
                       <button
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => handleDelete(item.docId)}
                         className="bg-red-500 text-white px-2 py-2 rounded-md flex items-center justify-center"
                       >
                         <MdDelete className="text-lg" />

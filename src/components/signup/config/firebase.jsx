@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { getStorage } from "firebase/storage";
-import { getFirestore ,doc, setDoc , collection, getDocs } from "firebase/firestore";
+import { getFirestore ,doc, setDoc , collection, getDocs, deleteDoc, } from "firebase/firestore";
 
 // Your Firebase config
 const firebaseConfig = {
@@ -35,6 +35,7 @@ export {
   doc, 
   collection, 
   getDocs, 
-  setDoc
+  setDoc,
+  deleteDoc
 };
 // export default app;
