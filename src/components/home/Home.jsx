@@ -11,6 +11,7 @@ import CartPage from '../cartpage/CartPage';
 import DesktopNavbar from '../navbar/DesktopNavbar';
 import AddToCartContext from '../context/AddToCartContext';
 import Loading from '../Loading';
+
 const Home = () => {
 
   // useState hook to manage the form type (login or signup)
@@ -22,7 +23,26 @@ const Home = () => {
   // Store products from fakestore API
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [itemcount ,setItemCount] = useState(0);
+  
+  // Item count state
+  const [itemCount, setItemCount] = useState(0);
+
+  // Check and set itemCount in localStorage if not already set
+  useEffect(() => {
+    const storedItemCount = localStorage.getItem("itemCount");
+    if (storedItemCount === null) {
+      localStorage.setItem("itemCount", 0); // Set default itemCount if not found
+    } else {
+      setItemCount(parseInt(storedItemCount)); // Retrieve from localStorage
+    }
+  }, []);
+
+  // Sync itemCount with localStorage
+  useEffect(() => {
+    localStorage.setItem("itemCount", itemCount);
+  }, [itemCount]);
+
+  // Fetch products from API
   useEffect(() => {
     const getData = async () => {
       try {
@@ -32,8 +52,7 @@ const Home = () => {
         }
         const data = await response.json();
         setProducts(data);
-        setItemCount(data.length); // ✅ Set item count
-        // console.log('Fetched products:', data); // ✅ Helpful debug log
+        setItemCount(data.length); // Set item count based on fetched products
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -41,12 +60,8 @@ const Home = () => {
 
     setTimeout(() => setLoading(false), 1000);
     getData();
-
   }, []);
   
-  // const [cartItems, setCartItems] = useState([]);
-  
-// console.log(products);
   // Show login/signup form when user clicks anywhere
   const handleClickAnywhere = () => {
     setShowAuth(true);
@@ -80,32 +95,28 @@ const Home = () => {
       <HeroSection />
 
       {/* Featured Products Section */}
-     {/* <AddToCartContext.Provider value={{cartItems, setCartItems}}> */}
-     <FeaturedProducts>
-  {loading && performance.navigation.type === 1 ? (
-    <div><Loading/></div>
-  ) : (
-    <>
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          image={product.image}
-          name={product.title}
-          description={product.description}
-          price={product.price}
-          setItemCount={setItemCount}
-          itemcount={itemcount}
-        />
-      ))}
-    </>
-  )}
-</FeaturedProducts>
+      <FeaturedProducts>
+        {loading && performance.navigation.type === 1 ? (
+          <div><Loading /></div>
+        ) : (
+          <>
+            {products.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                image={product.image}
+                name={product.title}
+                description={product.description}
+                price={product.price}
+                setItemCount={setItemCount}
+                itemcount={itemCount}
+              />
+            ))}
+          </>
+        )}
+      </FeaturedProducts>
 
-
-
-     {/* </AddToCartContext.Provider> */}
-
+      {/* Footer */}
       <Footer />
     </>
   );

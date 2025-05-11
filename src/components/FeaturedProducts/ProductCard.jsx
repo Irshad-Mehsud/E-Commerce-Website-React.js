@@ -1,12 +1,35 @@
-import React, { useContext } from "react";
-import AddToCartContext from "../context/AddToCartContext";
-import { addDoc, collection } from "firebase/firestore"; // Only Firestore methods
-import { db } from "../signup/config/firebase"; // ✅ Import Firestore config properly
+import React, { useEffect, useState } from "react";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+import { db } from "../signup/config/firebase";
 
 const ProductCard = ({ image, name, price, description, product }) => {
-  const { itemCount, setItemCount, cartItems, setCartItems } = useContext(AddToCartContext);
+  const [itemCount, setItemCount] = useState(() => {
+    return parseInt(localStorage.getItem("itemCount")) || 0;
+  });
+  const [cartItems, setCartItems] = useState([]);
 
-  const AddDattaToFirebase = async () => {
+  // Fetch total cart item count from Firebase on mount
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "cartItems"));
+        const items = [];
+        querySnapshot.forEach((doc) => {
+          items.push(doc.data());
+        });
+
+        const count = items.length;
+        setItemCount(count);
+        localStorage.setItem("itemCount", count);
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+      }
+    };
+
+    fetchCartCount();
+  }, []);
+
+  const AddDataToFirebase = async () => {
     try {
       await addDoc(collection(db, "cartItems"), {
         id: product.id,
@@ -14,7 +37,7 @@ const ProductCard = ({ image, name, price, description, product }) => {
         price: product.price,
         image: product.image,
         quantity: 1,
-        addedAt: new Date().toISOString()
+        addedAt: new Date().toISOString(),
       });
       console.log("Product added to Firebase successfully!");
     } catch (error) {
@@ -23,9 +46,12 @@ const ProductCard = ({ image, name, price, description, product }) => {
   };
 
   const handleAddToCart = () => {
-    setItemCount(itemCount + 1);
-    setCartItems([...cartItems, product]);
-    AddDattaToFirebase(); // ✅ Add to Firebase after cart update
+    const updatedCount = itemCount + 1;
+    setItemCount(updatedCount);
+    localStorage.setItem("itemCount", updatedCount);
+
+    setCartItems((prev) => [...prev, product]);
+    AddDataToFirebase();
   };
 
   return (
@@ -41,6 +67,7 @@ const ProductCard = ({ image, name, price, description, product }) => {
         >
           Add to Cart
         </button>
+        
       </div>
     </div>
   );

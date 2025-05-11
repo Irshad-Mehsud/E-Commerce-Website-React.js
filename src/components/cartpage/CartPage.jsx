@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { MdDelete } from "react-icons/md";
 import { db, collection, getDocs, deleteDoc, doc } from "../signup/config/firebase"; // Import Firestore functions
 import Footer from "../footer/Footer";
@@ -61,10 +61,9 @@ const CartPage = () => {
     }
   };
 
-  const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const totalPrice = useMemo(() => {
+  return cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+}, [cartItems]);
 
   if (loading) {
     return <div><Loading/></div>; // Show loading text while data is being fetched
